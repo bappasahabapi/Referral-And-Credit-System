@@ -65,3 +65,46 @@ required endpoints:
   - Create the controller and service for login.
 
   - Find the user by email, compare the hashed password, and if valid, generate a JSON Web Token (JWT).
+
+  ####  4. Purchase & Referral Logic
+
+- When a referred user completes their first purchase, both the referrer and the referred user earn 2 credits each.
+- All subsequent purchases must not issue additional referral credits.
+
+- 1️⃣ Check if user has made previous purchases
+  - Count existing Purchase records for the userId 
+  - The system only issues referral credits on the first purchase. 
+- 2️⃣ Record the purchase
+  - insert a new record in Purchase with { userId, amount, isFirst }.
+  - allows purchase history tracking and analytics.
+- 3️⃣ If first purchase → handle referral credit logic
+  - Update referral status
+  - findOneAndUpdate({ referredUserId, status:'PENDING' }) → {status:'CONVERTED'}
+  - Atomic update ensures the referral is converted once and only once.
+
+-  Credit both users
+    - Create two entries in CreditLedger — one for the referrer, one for the referred user.
+    - Keeps a consistent ledger of credit transactions (acts like double-entry bookkeeping).  
+- 4️⃣ If user was referred and referral was pending
+
+Create a global error handling middleware to catch any errors thrown by your services and send back a consistent, formatted error response
+
+🚀 **Example Scenario: Lina → Ryan**
+
+| Action                              | System Behavior                                                                  |
+| ----------------------------------- | -------------------------------------------------------------------------------- |
+| Lina signs up → gets code `LINA123` | Stored in `User.referralCode`                                                    |
+| Ryan signs up using `LINA123`       | Creates `Referral(PENDING)`                                                      |
+| Ryan makes 1st purchase             | Purchase created → Referral converted → Credits issued: **Lina +2**, **Ryan +2** |
+| Ryan makes 2nd purchase             | Purchase recorded, **no credits issued**                                         |
+
+🧮 **Dashboard Impact**
+
+After Ryan’s first purchase:
+
+
+| Metric                      | Value | Source                                                                |
+| --------------------------- | ----- | --------------------------------------------------------------------- |
+| `totalReferredUsers`        | 1     | `Referral.countDocuments({referrerId})`                               |
+| `referredUsersWhoPurchased` | 1     | `Referral.countDocuments({referrerId, status:'CONVERTED'})`           |
+| `totalCreditsEarned`        | 2     | `CreditLedger.aggregate({$match:{userId:referrerId}, $sum:'amount'})` |
