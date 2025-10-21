@@ -18,11 +18,9 @@ required endpoints:
 - `GET` /api/dashboard **(auth)** 
     → { totalReferredUsers, referredUsersWhoPurchased, totalCreditsEarned, referralLink }
 
-- **Project setup:** 
-- include installing all npm packages.
+#### 1.Project setup:** 
 - Initialize a new Node.js project (npm init -y).
-
-- Install dependencies: express, mongoose, typescript, ts-node, bcryptjs, jsonwebtoken, dotenv, cors. swagger docs
+- Install dependencies: express, mongoose, typescript, ts-node, bcryptjs, jsonwebtoken, dotenv, cors. swagger docs, 
 
 ```
   "dependencies": {
@@ -39,3 +37,31 @@ required endpoints:
 
 ```
 - Set up a tsconfig.json file for TypeScript compilation.
+
+
+####  2. Database Schema & Connection**
+
+- Create a configuration file and connect to my MongoDB database using environment variables.
+
+  - `config/index.ts` 
+  - `DB/index.ts`
+
+####  3. User Authentication
+
+- Registration | SignUp
+  - `router.use("/auth", authRouter);`
+
+- Create the controller and service for user registration.
+
+- In the service, hash the user's password using bcryptjs before saving it.
+
+- Generate a unique referral code (e.g., USERNAME + random numbers) and save it to the new user's document.
+
+- If a referralCode is included in the request, create a Referral document to link the new user to their referrer with a pending status.
+
+
+- `Login (/auth/login):`
+
+  - Create the controller and service for login.
+
+  - Find the user by email, compare the hashed password, and if valid, generate a JSON Web Token (JWT).
