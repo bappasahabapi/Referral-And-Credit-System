@@ -22,12 +22,12 @@ export default function HomePage() {
           <Link className="btn text-white" href="/register">
             Get Started
           </Link>
-          <Link
+          {/* <Link
             className="btn text-white bg-slate-700 hover:bg-slate-600"
             href="/login"
           >
             Login
-          </Link>
+          </Link> */}
         </div>
       </motion.div>
       <motion.div

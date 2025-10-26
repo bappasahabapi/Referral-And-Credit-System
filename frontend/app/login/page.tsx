@@ -32,6 +32,12 @@ export default function LoginPage() {
     }
 
     const res = await api.login(parse.data);
+    if (res.ok) {
+      try {
+        window.dispatchEvent(new Event("session:changed"));
+      } catch {}
+      router.push("/dashboard");
+    }
     if (!res.ok) {
       setError(res.error);
       show(res.error, "error");
