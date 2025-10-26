@@ -5,7 +5,12 @@ digital goods marketplace). The goal is to demonstrate your ability to design, i
 a scalable full-stack application with clean architecture, modern UI, and thoughtful engineering
 practices.
 
+## project demo 👇
 
+[![Project Demo](./Images/dash.png)](https://drive.google.com/file/d/1RaspCfRXkYYgUb1OvzzkyJMUWHHl1Qc_/view?usp=sharing)
+
+
+---
 
 ### 👍 Tested Endpoint in swagger
 
