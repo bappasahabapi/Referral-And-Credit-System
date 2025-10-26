@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0b1020;
+  --card: #0f172a;
+  --muted: #94a3b8;
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+}
+body {
+  background: var(--bg);
+  color: white;
+}
+a {
+  color: theme("colors.brand.DEFAULT");
+}
+.btn {
+  @apply px-4 py-2 rounded-xl bg-brand hover:bg-brand-dark transition;
+}
+.input {
+  @apply w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 outline-none;
+}
+.card {
+  @apply bg-slate-900/60 backdrop-blur rounded-2xl shadow-lg border border-slate-800;
+}
